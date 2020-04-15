@@ -46,3 +46,32 @@ spec:
   gitRepositoryRef:
     name: podinfo
 ```
+
+Git repository tags semver range:
+
+```yaml
+apiVersion: source.fluxcd.io/v1alpha1
+kind: GitRepository
+metadata:
+  name: podinfo-releases
+spec:
+  interval: 5m
+  url: https://github.com/stefanprodan/podinfo-deploy
+  ref:
+    semver: ">=0.0.1"
+```
+
+Production environment kustomization:
+
+```yaml
+apiVersion: kustomize.fluxcd.io/v1alpha1
+kind: Kustomization
+metadata:
+  name: podinfo-production
+spec:
+  interval: 10m
+  path: "./overlays/production/"
+  prune: "env=production,app=podinfo"
+  gitRepositoryRef:
+    name: podinfo-releases
+```
