@@ -1,0 +1,10 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: labels
+labels:
+  part-of: webapp
+  component: backend
+fieldSpecs:
+  - path: metadata/labels
+    create: true

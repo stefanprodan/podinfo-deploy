@@ -1,0 +1,9 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: labels
+labels:
+  part-of: webapp
+fieldSpecs:
+  - path: metadata/labels
+    create: true
