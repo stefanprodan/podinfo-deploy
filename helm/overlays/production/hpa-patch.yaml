@@ -1,0 +1,9 @@
+apiVersion: helm.fluxcd.io/v2alpha1
+kind: HelmRelease
+metadata:
+  name: podinfo
+spec:
+  values:
+    hpa:
+      enabled: true
+      maxReplicas: 5

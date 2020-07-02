@@ -1,0 +1,6 @@
+apiVersion: source.fluxcd.io/v1alpha1
+kind: HelmChart
+metadata:
+  name: podinfo
+spec:
+  version: '>= 4.0.0 < 5.0.0'
