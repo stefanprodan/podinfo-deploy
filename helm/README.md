@@ -1,6 +1,6 @@
 # podinfo-deploy-helm
 
-A GitOps workflow for multi-env deployments with GitOps Toolkit.
+An workflow for multi-env deployments with GitOps Toolkit.
 
 Git repository definition:
 
