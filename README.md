@@ -27,7 +27,7 @@ metadata:
 spec:
   interval: 1m
   path: "./overlays/dev/"
-  prune: "env=dev"
+  prune: true
   sourceRef:
     kind: GitRepository
     name: podinfo
@@ -43,7 +43,7 @@ metadata:
 spec:
   interval: 1m
   path: "./overlays/staging/"
-  prune: "env=staging"
+  prune: true
   sourceRef:
     kind: GitRepository
     name: podinfo
@@ -73,7 +73,7 @@ metadata:
 spec:
   interval: 10m
   path: "./overlays/production/"
-  prune: "env=production"
+  prune: true
   sourceRef:
     kind: GitRepository
     name: podinfo-releases
