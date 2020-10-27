@@ -78,3 +78,35 @@ spec:
     kind: GitRepository
     name: podinfo-releases
 ```
+
+Development environment gitops toolkit kustomization:
+
+```yaml
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: podinfo
+  namespace: gotk-system
+spec:
+  interval: 1m
+  url: https://github.com/stefanprodan/podinfo-deploy
+  ref:
+    branch: master
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: podinfo-dev
+  namespace: gotk-system
+spec:
+  interval: 1m
+  path: "./overlays/dev/"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: podinfo
+  dependsOn:
+    - name: monitoring
+
+```
