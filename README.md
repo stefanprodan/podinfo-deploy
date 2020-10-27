@@ -25,6 +25,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
   name: podinfo-dev
+  namespace: gotk-system
 spec:
   interval: 1m
   path: "./overlays/dev/"
@@ -41,6 +42,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
   name: podinfo-staging
+  namespace: gotk-system
 spec:
   interval: 1m
   path: "./overlays/staging/"
@@ -57,6 +59,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: podinfo-releases
+  namespace: gotk-system
 spec:
   interval: 5m
   url: https://github.com/stefanprodan/podinfo-deploy
@@ -71,6 +74,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
   name: podinfo-production
+  namespace: gotk-system
 spec:
   interval: 1m
   path: "./overlays/production/"
