@@ -107,6 +107,6 @@ spec:
     kind: GitRepository
     name: podinfo
   dependsOn:
-    - name: monitoring
+    - name: gotk-system
 
 ```
