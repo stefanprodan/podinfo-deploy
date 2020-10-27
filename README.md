@@ -6,10 +6,11 @@ and [kustomize-controller](https://github.com/fluxcd/kustomize-controller).
 Git repository definition:
 
 ```yaml
-apiVersion: source.fluxcd.io/v1alpha1
+apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: podinfo
+  namespace: gotk-system
 spec:
   interval: 1m
   url: https://github.com/stefanprodan/podinfo-deploy
@@ -20,7 +21,7 @@ spec:
 Dev environment kustomization:
 
 ```yaml
-apiVersion: kustomize.fluxcd.io/v1alpha1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
   name: podinfo-dev
@@ -36,7 +37,7 @@ spec:
 Staging environment kustomization:
 
 ```yaml
-apiVersion: kustomize.fluxcd.io/v1alpha1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
   name: podinfo-staging
@@ -52,7 +53,7 @@ spec:
 Git repository tags semver range:
 
 ```yaml
-apiVersion: source.fluxcd.io/v1alpha1
+apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: podinfo-releases
@@ -66,47 +67,15 @@ spec:
 Production environment kustomization:
 
 ```yaml
-apiVersion: kustomize.fluxcd.io/v1alpha1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
   name: podinfo-production
 spec:
-  interval: 10m
+  interval: 1m
   path: "./overlays/production/"
   prune: true
   sourceRef:
     kind: GitRepository
     name: podinfo-releases
-```
-
-Development environment gitops toolkit kustomization:
-
-```yaml
----
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: GitRepository
-metadata:
-  name: podinfo
-  namespace: gotk-system
-spec:
-  interval: 1m
-  url: https://github.com/stefanprodan/podinfo-deploy
-  ref:
-    branch: master
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: podinfo-dev
-  namespace: gotk-system
-spec:
-  interval: 1m
-  path: "./overlays/dev/"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: podinfo
-  dependsOn:
-    - name: gotk-system
-
 ```
