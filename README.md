@@ -1,85 +1,83 @@
 # podinfo-deploy
 
-A GitOps workflow for multi-env deployments with FluxCD [source-controller](https://github.com/fluxcd/source-controller)
-and [kustomize-controller](https://github.com/fluxcd/kustomize-controller).
+A GitOps workflow for multi-env deployments with Flux v2, Kustomize and Helm.
 
-Git repository definition:
+## Repository structure
 
-```yaml
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: GitRepository
-metadata:
-  name: podinfo
-  namespace: gotk-system
-spec:
-  interval: 1m
-  url: https://github.com/stefanprodan/podinfo-deploy
-  ref:
-    branch: master
+```
+├── apps
+│   ├── base
+│   ├── production 
+│   └── staging
+├── infrastructure
+│   ├── nginx
+│   ├── redis
+│   └── repositories
+└── clusters
+    ├── production
+    └── staging
 ```
 
-Dev environment kustomization:
+Applications:
 
-```yaml
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: podinfo-dev
-  namespace: gotk-system
-spec:
-  interval: 1m
-  path: "./overlays/dev/"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: podinfo
-``` 
-
-Staging environment kustomization:
-
-```yaml
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: podinfo-staging
-  namespace: gotk-system
-spec:
-  interval: 1m
-  path: "./overlays/staging/"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: podinfo
+```
+./apps/
+├── base
+│   └── podinfo
+│       ├── kustomization.yaml
+│       ├── namespace.yaml
+│       └── release.yaml
+├── production
+│   ├── kustomization.yaml
+│   └── podinfo-patch.yaml
+└── staging
+    ├── kustomization.yaml
+    └── podinfo-patch.yaml
 ```
 
-Git repository tags semver range:
+- **apps/base/** contains namespaces and Helm release definitions
+- **apps/production/** contains the production values for Helm releases
+- **apps/staging/** contains the staging values for Helm pre-releases
 
-```yaml
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: GitRepository
-metadata:
-  name: podinfo-releases
-  namespace: gotk-system
-spec:
-  interval: 5m
-  url: https://github.com/stefanprodan/podinfo-deploy
-  ref:
-    semver: ">=0.0.1"
+Infrastructure:
+
+```
+./infrastructure/
+├── nginx
+│   ├── kustomization.yaml
+│   ├── namespace.yaml
+│   └── release.yaml
+├── redis
+│   ├── kustomization.yaml
+│   ├── namespace.yaml
+│   └── release.yaml
+└── repositories
+    ├── bitnami.yaml
+    ├── kustomization.yaml
+    └── podinfo.yaml
 ```
 
-Production environment kustomization:
+Clusters:
 
-```yaml
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: podinfo-production
-  namespace: gotk-system
-spec:
-  interval: 1m
-  path: "./overlays/production/"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: podinfo-releases
 ```
+./clusters/
+├── production
+│   ├── apps.yaml
+│   └── infrastructure.yaml
+└── staging
+    ├── apps.yaml
+    └── infrastructure.yaml
+```
+
+## Bootstrap
+
+Staging cluster:
+
+```sh
+flux bootstrap github \
+    --owner=${GH_OWNER} \
+    --repository=${GH_REPO} \
+    --branch=main \
+    --path=cluster/staging
+```
+

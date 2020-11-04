@@ -1,0 +1,12 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: podinfo
+spec:
+  chart:
+    spec:
+      version: ">=5.0.0-alpha.1"
+  values:
+    resources:
+      limits:
+        memory: 256Mi
