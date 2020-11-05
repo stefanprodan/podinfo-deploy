@@ -6,8 +6,8 @@ metadata:
 spec:
   chart:
     spec:
-      version: "5.x.x"
+      version: ">=1.0.0"
   values:
-    resources:
-      limits:
-        memory: 512Mi
+    ingress:
+      hosts:
+        - podinfo.production

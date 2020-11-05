@@ -17,3 +17,8 @@ spec:
   # https://github.com/stefanprodan/podinfo/blob/master/charts/podinfo/values.yaml
   values:
     cache: redis.redis:6379
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      path: "/*"

@@ -5,8 +5,10 @@ metadata:
 spec:
   chart:
     spec:
-      version: ">=5.0.0-alpha.1"
+      version: ">=1.0.0-alpha"
+  test:
+    enable: true
   values:
-    resources:
-      limits:
-        memory: 256Mi
+    ingress:
+      hosts:
+        - podinfo.staging
