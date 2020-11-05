@@ -220,3 +220,13 @@ flux bootstrap github \
     --personal \
     --path=cluster/staging
 ```
+
+Watch for the Helm releases being install on the cluster:
+
+```console
+$ flux get helmreleases --all-namespaces 
+NAMESPACE	NAME   	REVISION	SUSPENDED	READY	MESSAGE                          
+nginx    	nginx  	5.6.14  	False    	True 	release reconciliation succeeded	
+podinfo  	podinfo	5.0.3   	False    	True 	release reconciliation succeeded	
+redis    	redis  	11.3.4  	False    	True 	release reconciliation succeeded
+```
