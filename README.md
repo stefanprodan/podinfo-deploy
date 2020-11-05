@@ -1,6 +1,6 @@
 # flux2-kustomize-helm-example
 
-A GitOps workflow for multi-env deployments with Flux v2, Kustomize and Helm.
+A GitOps workflow example for multi-env deployments with Flux v2, Kustomize and Helm.
 
 For this example we assume a scenario with two clusters: staging and production.
 The end goal is to leverage Flux and Kustomize to manage both clusters while minimizing duplicated declarations.
@@ -197,9 +197,21 @@ spec:
   path: ./apps/staging
   prune: true
   validation: client
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: infrastructure
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure
 ```
 
-Note that with `path: ./apps/staging` we configure Flux to sync the production Kustomize overlay and 
+Note that with `path: ./apps/staging` we configure Flux to sync the staging Kustomize overlay and 
 with `dependsOn` we tell Flux to create the infrastructure items before deploying the apps.
 
 Fork this repository and export your GitHub personal access token, username and repo name:
@@ -210,7 +222,7 @@ export GITHUB_USER=<your-username>
 export GITHUB_REPO=<repository-name>
 ```
 
-Bootstrap the staging cluster:
+Install the Flux CLI with `brew install fluxcd/tap/flux` and bootstrap the staging cluster:
 
 ```sh
 flux bootstrap github \
@@ -220,6 +232,9 @@ flux bootstrap github \
     --personal \
     --path=cluster/staging
 ```
+
+The bootstrap command commits the manifests for the Flux components in `clusters/staging/flux-system` dir
+and creates a deploy key with read-only access on GitHub, so it can pull changes inside the cluster.
 
 Watch for the Helm releases being install on the cluster:
 
