@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - https://raw.githubusercontent.com/projectcontour/contour/v1.10.0/examples/render/contour.yaml
+patchesStrategicMerge:
+  - |
+    apiVersion: apps/v1
+    kind: DaemonSet
+    metadata:
+      name: envoy
+      namespace: projectcontour
+    spec:
+      template:
+        metadata:
+          annotations:
+            linkerd.io/inject: enabled
+        spec:
+          automountServiceAccountToken: true
