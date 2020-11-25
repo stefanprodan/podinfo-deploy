@@ -1,0 +1,28 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno:generateaccounts
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - serviceaccounts
+    verbs:
+      - create
+      - update
+      - delete
+      - list
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kyverno:generateaccounts
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kyverno:generateaccounts
+subjects:
+  - kind: ServiceAccount
+    name: kyverno-service-account
+    namespace: kyverno
