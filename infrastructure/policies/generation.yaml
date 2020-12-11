@@ -1,0 +1,57 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: flux-service-account
+spec:
+  rules:
+    - name: service-account
+      match:
+        resources:
+          kinds:
+            - Namespace
+          name: "*"
+      exclude:
+        resources:
+          namespaces:
+            - default
+            - kube-public
+            - kube-system
+            - flux-system
+      generate:
+        kind: ServiceAccount
+        name: flux-reconciler
+        namespace: "{{request.object.metadata.name}}"
+        data: {}
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: flux-role-binding
+spec:
+  rules:
+    - name: role-binding
+      match:
+        resources:
+          kinds:
+            - Namespace
+          name: "*"
+      exclude:
+        resources:
+          namespaces:
+            - default
+            - kube-public
+            - kube-system
+            - flux-system
+      generate:
+        kind: RoleBinding
+        name: flux-reconciler
+        namespace: "{{request.object.metadata.name}}"
+        data:
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: cluster-admin
+          subjects:
+            - kind: ServiceAccount
+              name: flux-reconciler
+              namespace: "{{request.object.metadata.name}}"

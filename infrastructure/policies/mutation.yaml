@@ -1,0 +1,20 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: flux-set-service-account
+spec:
+  rules:
+    - name: serviceAccountName
+      exclude:
+        resources:
+          namespaces:
+            - flux-system
+      match:
+        resources:
+          kinds:
+            - Kustomization
+            - HelmRelease
+      mutate:
+        overlay:
+          spec:
+            serviceAccountName: flux-reconciler
