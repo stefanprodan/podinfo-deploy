@@ -1,0 +1,38 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: podinfo
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: podinfo
+      sourceRef:
+        kind: HelmRepository
+        name: podinfo
+        namespace: flux-system
+      interval: 1m
+  values:
+    replicaCount: 2
+---
+#apiVersion: helm.toolkit.fluxcd.io/v2beta1
+#kind: HelmRelease
+#metadata:
+#  name: podinfo2
+#  namespace: default
+#spec:
+#  interval: 5m
+#  chart:
+#    spec:
+#      chart: podinfo
+#      sourceRef:
+#        kind: HelmRepository
+#        name: podinfo
+#        namespace: flux-system
+#      interval: 1m
+#  values:
+#    replicaCount: 2
+#
+#
+##

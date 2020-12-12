@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
 - deployment.yaml
 images:
-  - name: ghcr.io/stefanprodan/podinfo
-    newName: ghcr.io/stefanprodan/podinfo
-    newTag: 5.0.0 # {"$imagepolicy": "flux-system:podinfo:tag"}
+- name: ghcr.io/stefanprodan/podinfo
+  newName: ghcr.io/stefanprodan/podinfo
+  newTag: 5.0.3 # {"$imagepolicy": "flux-system:podinfo:tag"}
