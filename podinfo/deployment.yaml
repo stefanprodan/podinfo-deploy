@@ -18,6 +18,8 @@ spec:
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9797"
+        varsub/testa: "bla-${TEST_A}"
+        varsub/testb: "bla-${TEST_B}"
       labels:
         app: podinfo
     spec:
@@ -72,3 +74,11 @@ spec:
           requests:
             cpu: 100m
             memory: 64Mi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: podinfo
+data:
+  test: |
+    test this ${TEST_B}
