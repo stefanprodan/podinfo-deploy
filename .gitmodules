@@ -1,0 +1,3 @@
+[submodule "podinfo"]
+	path = podinfo
+	url = https://github.com/stefanprodan/podinfo
