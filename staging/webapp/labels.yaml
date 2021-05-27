@@ -3,8 +3,7 @@ kind: LabelTransformer
 metadata:
   name: labels
 labels:
-  part-of: webapp
-  component: frontend
+  app.kubernetes.io/part-of: webapp
 fieldSpecs:
   - path: metadata/labels
     create: true

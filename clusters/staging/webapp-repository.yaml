@@ -1,0 +1,19 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: webapp
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://github.com/stefanprodan/podinfo-deploy
+  ref:
+    branch: include
+  include:
+    - repository:
+        name: frontend
+      fromPath: deploy/bases/frontend
+      toPath: staging/webapp/base/frontend
+    - repository:
+        name: backend
+      fromPath: deploy/bases/backend
+      toPath: staging/webapp/base/backend
