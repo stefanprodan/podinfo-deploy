@@ -10,7 +10,7 @@ spec:
   inputs:
     - repo: oci://ghcr.io/stefanprodan/manifests/podinfo-deploy
       version: '>=0.0.0-0'
-      env: dev
+      env: staging
   commonMetadata:
     labels:
       app.kubernetes.io/name: podinfo
