@@ -5,13 +5,19 @@ A GitOps workflow for multi-env deployments with [Flux Operator](https://fluxope
 ## Publishing OCI Artifacts
 
 ```shell
-make set-version VERSION=6.0.0
-make push VERSION=6.9.4
+make set-version push
 ```
 
 ## Deploying with Flux Operator
 
+Install:
+
 ```shell
-kubectl create namespace apps --server-side-apply
-kubectl apply -f flux/deploy.yaml
+make deploy
+```
+
+Uninstall:
+
+```shell
+make undeploy
 ```

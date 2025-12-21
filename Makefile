@@ -1,6 +1,6 @@
 .PHONY: set-version push deploy undeploy help
 
-VERSION ?= 6.9.4
+VERSION ?= $(shell curl -s https://api.github.com/repos/stefanprodan/podinfo/releases/latest | grep '"tag_name":' | cut -d'"' -f4)
 IMAGE := ghcr.io/stefanprodan/podinfo
 ARTIFACT := oci://ghcr.io/stefanprodan/manifests/podinfo-deploy
 
@@ -46,4 +46,3 @@ deploy:
 undeploy:
 	@echo "Removing deployment from Kubernetes"
 	kubectl delete -f flux/deploy.yaml --ignore-not-found
-	kubectl delete namespace apps --ignore-not-found
