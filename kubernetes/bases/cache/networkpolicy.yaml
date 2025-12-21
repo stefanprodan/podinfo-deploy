@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: podinfo-cache
+  labels:
+    app.kubernetes.io/name: podinfo-cache
+    app.kubernetes.io/part-of: podinfo
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: podinfo-cache
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: podinfo-frontend
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: podinfo-backend
+      ports:
+        - protocol: TCP
+          port: 6379

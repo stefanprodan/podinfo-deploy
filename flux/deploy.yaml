@@ -1,0 +1,42 @@
+apiVersion: fluxcd.controlplane.io/v1
+kind: ResourceSet
+metadata:
+  name: podinfo
+  namespace: apps
+  annotations:
+    fluxcd.controlplane.io/reconcileTimeout: "5m"
+spec:
+  wait: true
+  inputs:
+    - repo: oci://ghcr.io/stefanprodan/manifests/podinfo-deploy
+      version: '>=0.0.0-0'
+      env: dev
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: podinfo
+  resources:
+    - apiVersion: source.toolkit.fluxcd.io/v1
+      kind: OCIRepository
+      metadata:
+        name: podinfo-manifests
+        namespace: << inputs.provider.namespace >>
+      spec:
+        interval: 10m
+        url: << inputs.repo >>
+        ref:
+          semver: << inputs.version | quote >>
+    - apiVersion: kustomize.toolkit.fluxcd.io/v1
+      kind: Kustomization
+      metadata:
+        name: podinfo-sync
+        namespace: << inputs.provider.namespace >>
+      spec:
+        interval: 1h
+        retryInterval: 5m
+        timeout: 5m
+        prune: true
+        wait: true
+        sourceRef:
+          kind: OCIRepository
+          name: podinfo-manifests
+        path: overlays/<< inputs.env >>
