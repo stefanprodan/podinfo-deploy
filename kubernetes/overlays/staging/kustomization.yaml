@@ -10,3 +10,4 @@ patches:
   - path: security-patch.yaml
     target:
       kind: Deployment
+      name: podinfo-frontend|podinfo-backend
